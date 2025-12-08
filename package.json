@@ -1,0 +1,30 @@
+{
+  "name": "@qezta/ui",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "svelte": "./src/index.js",
+  "exports": {
+    "./components/*": {
+      "types": "./src/components/*",
+      "svelte": "./src/components/*",
+      "default": "./src/components/*"
+    },
+    "./cursor": {
+      "types": "./src/cursor.ts",
+      "default": "./src/cursor.ts"
+    },
+    "./styles/*": {
+      "default": "./src/styles/*"
+    }
+  },
+  "peerDependencies": {
+    "svelte": "^3.59.2",
+    "three": "^0.178.0"
+  },
+  "dependencies": {
+    "@fortawesome/free-brands-svg-icons": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "svelte-fa": "^3.0.4"
+  }
+}
