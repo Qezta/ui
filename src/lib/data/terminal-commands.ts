@@ -13,13 +13,13 @@ const projects = [
     name: 'HybridTransformer-MFIF',
     category: 'ml',
     stars: '*',
-    desc: 'Funded computer vision research'
+    desc: 'Multi-focus image fusion transformer'
   },
   {
     name: 'OS-nixCfg',
     category: 'infrastructure',
     stars: '*** 14',
-    desc: 'DRW-recognized Nix configuration'
+    desc: 'Multi-platform NixOS configuration'
   },
   {
     name: 'hs-faust',
@@ -31,7 +31,7 @@ const projects = [
     name: 'CARLA-Autonomous-Driving',
     category: 'ml',
     stars: '*** 18',
-    desc: '5th place national hackathon'
+    desc: 'Autonomous vehicle simulation'
   },
   { name: 'DocAssist-LLM', category: 'ml', stars: '* 8', desc: 'RAG-enhanced LLM from scratch' },
   {
@@ -80,19 +80,18 @@ Type any command to get started!`
     execute: () => ({
       output: `Divit Mittal - Infrastructure Engineer & ML Researcher
 
-B.Tech Data Science @ Manipal University Jaipur (8.0 CGPA)
+B.Tech Data Science @ Manipal University Jaipur
 Nix Ecosystem Consultant @ Tweag (Blockfrost, ModusCreate)
 Published Research: HuggingFace + Kaggle
-BobbleAI Datathon Winner, DRW Recognition
 
 Specializing in:
 • Functional Programming (Haskell, Nix)
 • Infrastructure as Code (NixOS, 100+ modules)
-• Computer Vision Transformers (Funded Research)
+• Computer Vision Transformers
 • Cloud Data Engineering (AWS, Spark)
 
-A rare intersection of functional programming, infrastructure engineering,
-and AI/ML research with production consulting experience.`
+Focus areas: declarative infrastructure, type-safe systems,
+and production ML deployment.`
     })
   },
 
@@ -185,17 +184,13 @@ Nix Ecosystem Consultant @ Tweag (July 2024 - Present)
    • Enterprise-scale configuration management
 
 Computer Vision Researcher @ Manipal University (May-Aug 2025)
-   • Funded research on Hybrid Transformer MFIF
+   • Hybrid Transformer MFIF research
    • Published model on HuggingFace with live demo
-   • State-of-the-art results on benchmark datasets
+   • Benchmark evaluation on LLVIP, TNO, MSRS datasets
 
 DevOps & SysAdmin @ UbiOps, Yes!Delft (Dec 2021 - Feb 2022)
    • Containerized ML workloads (Docker/Kubernetes)
-   • CI/CD pipelines, AWS/GCP infrastructure
-
-Awards:
-   • BobbleAI Datathon Winner (Sept 2024)
-   • Proglint CV2k23 5th Place (Oct 2023)`
+   • CI/CD pipelines, AWS/GCP infrastructure`
     })
   },
 
