@@ -15,12 +15,35 @@
   </p>
 </section>
 
-<style>
+<style lang="scss">
+  section {
+    min-width: 0; // Prevent flex overflow
+  }
+
   a {
     white-space: nowrap;
+    word-break: keep-all;
   }
 
   p {
     text-align: justify;
+    line-height: 1.6;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  // Mobile optimization
+  @media (max-width: 505px) {
+    p {
+      text-align: left;
+      font-size: 0.95rem;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 0.5rem;
+    }
   }
 </style>

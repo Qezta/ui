@@ -3,6 +3,9 @@
   import Title from '../atoms/Title.svelte';
   import About from '../molecules/About.svelte';
   import Socials from '../molecules/Socials.svelte';
+  import Metrics from './Metrics.svelte';
+  import Terminal from './Terminal.svelte';
+  import SourceLink from '../atoms/SourceLink.svelte';
 </script>
 
 <div id="card">
@@ -14,14 +17,23 @@
     <div id="molecules">
       <Socials />
       <About />
+      <Metrics />
     </div>
   </div>
 </div>
 
+<Terminal />
+<SourceLink />
+
 <style lang="scss">
-  #card,
-  #molecules {
+  #card {
     gap: 1rem;
+    display: flex;
+    flex-direction: row;
+  }
+
+  #molecules {
+    gap: 2rem;
     display: flex;
     flex-direction: row;
   }
@@ -29,7 +41,8 @@
   #card-container {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    gap: 1.5rem;
+    min-width: 0; // Prevent flex overflow
   }
 
   #image {
@@ -44,21 +57,35 @@
     padding: 25px;
     max-width: 1450px;
     background: #131313eb;
+    box-sizing: border-box;
 
     // Full HD
     @media (max-width: 1800px) {
       max-width: 1300px;
     }
 
+    // Tablet
+    @media (max-width: 768px) {
+      padding: 20px;
+    }
+
     // Mobile
     @media (max-width: 505px) {
       border-radius: 0;
       width: initial !important;
+      padding: 20px 15px;
+      gap: 1rem;
     }
 
     // Mobile
     @media (min-width: 506px) {
       max-height: 85vh; // Prevents overflow when screen height is too small.
+    }
+  }
+
+  #molecules {
+    @media (max-width: 505px) {
+      gap: 2rem;
     }
   }
 
@@ -76,6 +103,10 @@
     #molecules,
     #card {
       flex-direction: column;
+    }
+
+    #molecules {
+      gap: 2rem;
     }
   }
 </style>
