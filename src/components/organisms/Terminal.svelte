@@ -119,6 +119,17 @@ This is an interactive CLI experience - explore away!`,
       setTimeout(() => focusInput(), 100);
     }
   }
+
+  function linkifyUrls(text: string): string {
+    // Match URLs (with or without protocol)
+    const urlRegex = /(?:https?:\/\/)?(?:www\.)?([a-zA-Z0-9-]+\.(?:[a-zA-Z]{2,}))(?:\/[^\s]*)?/g;
+
+    return text.replace(urlRegex, (match) => {
+      // Add https:// if no protocol
+      const href = match.startsWith('http') ? match : `https://${match}`;
+      return `<a href="${href}" target="_blank" rel="noopener noreferrer" class="terminal-link">${match}</a>`;
+    });
+  }
 </script>
 
 <!-- Terminal Toggle Button -->
@@ -152,7 +163,7 @@ This is an interactive CLI experience - explore away!`,
           </div>
         {/if}
         {#if entry.output}
-          <pre class="terminal-output" class:error={entry.isError}>{entry.output}</pre>
+          <pre class="terminal-output" class:error={entry.isError}>{@html linkifyUrls(entry.output)}</pre>
         {/if}
       {/each}
 
@@ -374,6 +385,18 @@ This is an interactive CLI experience - explore away!`,
     &.error {
       color: #ff6b6b;
       font-weight: 500;
+    }
+
+    :global(.terminal-link) {
+      color: #667eea;
+      text-decoration: underline;
+      cursor: pointer;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: #764ba2;
+        text-decoration: underline;
+      }
     }
   }
 
