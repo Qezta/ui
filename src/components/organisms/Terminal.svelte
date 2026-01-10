@@ -121,14 +121,24 @@ This is an interactive CLI experience - explore away!`,
   }
 
   function linkifyUrls(text: string): string {
-    // Match URLs (with or without protocol)
-    const urlRegex = /(?:https?:\/\/)?(?:www\.)?([a-zA-Z0-9-]+\.(?:[a-zA-Z]{2,}))(?:\/[^\s]*)?/g;
+    // First, linkify email addresses
+    const emailRegex = /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b/g;
+    let result = text.replace(emailRegex, (match) => {
+      return `<a href="mailto:${match}" class="terminal-link">${match}</a>`;
+    });
 
-    return text.replace(urlRegex, (match) => {
+    // Then, match URLs (with or without protocol)
+    const urlRegex = /(?:https?:\/\/)?(?:www\.)?([a-zA-Z0-9-]+\.(?:[a-zA-Z]{2,}))(?:\/[^\s]*)?/g;
+    result = result.replace(urlRegex, (match) => {
+      // Skip if already linkified (contains HTML tags)
+      if (match.includes('<a')) return match;
+
       // Add https:// if no protocol
       const href = match.startsWith('http') ? match : `https://${match}`;
       return `<a href="${href}" target="_blank" rel="noopener noreferrer" class="terminal-link">${match}</a>`;
     });
+
+    return result;
   }
 </script>
 
