@@ -81,8 +81,6 @@ Type any command to get started!`
       output: `Divit Mittal - Infrastructure Engineer & ML Researcher
 
 B.Tech Data Science @ Manipal University Jaipur
-Nix Ecosystem Consultant @ Tweag (Blockfrost, ModusCreate)
-Published Research: HuggingFace + Kaggle
 
 Specializing in:
 • Functional Programming (Haskell, Nix)
@@ -178,14 +176,9 @@ Feel free to reach out!`
     execute: () => ({
       output: `Work Experience:
 
-Nix Ecosystem Consultant @ Tweag (July 2024 - Present)
-   • Blockfrost Cardano Node Integration
-   • ModusCreate CI/CD Infrastructure Automation
-   • Enterprise-scale configuration management
-
 Computer Vision Researcher @ Manipal University (May-Aug 2025)
    • Hybrid Transformer MFIF research
-   • Published model on HuggingFace with live demo
+   • Model on HuggingFace with live demo
    • Benchmark evaluation on LLVIP, TNO, MSRS datasets
 
 DevOps & SysAdmin @ UbiOps, Yes!Delft (Dec 2021 - Feb 2022)
@@ -216,7 +209,6 @@ Your CV is opening in a new tab!`
     execute: () => ({
       output: `these 42 derivations will be built:
   /nix/store/...-divit-profile-0.1.0.drv
-  /nix/store/...-expertise-ml-research.drv
   /nix/store/...-expertise-nix-infrastructure.drv
   /nix/store/...-expertise-functional-programming.drv
 
