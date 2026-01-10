@@ -21,7 +21,7 @@
     history = [
       {
         input: '',
-        output: `Welcome to Divit's Terminal! 🚀
+        output: `Welcome to Divit's Terminal!
 
 Type 'help' to see available commands.
 Type 'about' to learn more about me.

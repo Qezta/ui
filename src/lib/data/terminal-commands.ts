@@ -12,32 +12,32 @@ const projects = [
   {
     name: 'HybridTransformer-MFIF',
     category: 'ml',
-    stars: '⭐',
+    stars: '*',
     desc: 'Funded computer vision research'
   },
   {
     name: 'OS-nixCfg',
     category: 'infrastructure',
-    stars: '⭐⭐⭐ 14',
+    stars: '*** 14',
     desc: 'DRW-recognized Nix configuration'
   },
   {
     name: 'hs-faust',
     category: 'functional',
-    stars: '⭐ 5',
+    stars: '* 5',
     desc: 'Haskell DSL for audio processing'
   },
   {
     name: 'CARLA-Autonomous-Driving',
     category: 'ml',
-    stars: '⭐⭐⭐ 18',
+    stars: '*** 18',
     desc: '5th place national hackathon'
   },
-  { name: 'DocAssist-LLM', category: 'ml', stars: '⭐ 8', desc: 'RAG-enhanced LLM from scratch' },
+  { name: 'DocAssist-LLM', category: 'ml', stars: '* 8', desc: 'RAG-enhanced LLM from scratch' },
   {
     name: 'kanata-service',
     category: 'infrastructure',
-    stars: '⭐ 11',
+    stars: '* 11',
     desc: 'macOS launchctl service manager'
   }
 ];
@@ -80,10 +80,10 @@ Type any command to get started!`
     execute: () => ({
       output: `Divit Mittal - Infrastructure Engineer & ML Researcher
 
-🎓 B.Tech Data Science @ Manipal University Jaipur (8.0 CGPA)
-💼 Nix Ecosystem Consultant @ Tweag (Blockfrost, ModusCreate)
-🔬 Published Research: HuggingFace + Kaggle
-🏆 BobbleAI Datathon Winner, DRW Recognition
+B.Tech Data Science @ Manipal University Jaipur (8.0 CGPA)
+Nix Ecosystem Consultant @ Tweag (Blockfrost, ModusCreate)
+Published Research: HuggingFace + Kaggle
+BobbleAI Datathon Winner, DRW Recognition
 
 Specializing in:
 • Functional Programming (Haskell, Nix)
@@ -163,12 +163,12 @@ Level: ███████████░░░ Expert`
     execute: () => ({
       output: `Contact Information:
 
-📧 Email:        divitmittal@outlook.in
-🐙 GitHub:       github.com/DivitMittal
-💼 LinkedIn:     linkedin.com/in/divit-mittal
-🤗 HuggingFace:  huggingface.co/divitmittal
-📊 Kaggle:       kaggle.com/divitmittal
-🐦 Twitter:      x.com/Divit_Mittal
+Email:        divitmittal@outlook.in
+GitHub:       github.com/DivitMittal
+LinkedIn:     linkedin.com/in/divit-mittal
+HuggingFace:  huggingface.co/divitmittal
+Kaggle:       kaggle.com/divitmittal
+Twitter:      x.com/Divit_Mittal
 
 Feel free to reach out!`
     })
@@ -179,21 +179,21 @@ Feel free to reach out!`
     execute: () => ({
       output: `Work Experience:
 
-💼 Nix Ecosystem Consultant @ Tweag (July 2024 - Present)
+Nix Ecosystem Consultant @ Tweag (July 2024 - Present)
    • Blockfrost Cardano Node Integration
    • ModusCreate CI/CD Infrastructure Automation
    • Enterprise-scale configuration management
 
-🔬 Computer Vision Researcher @ Manipal University (May-Aug 2025)
+Computer Vision Researcher @ Manipal University (May-Aug 2025)
    • Funded research on Hybrid Transformer MFIF
    • Published model on HuggingFace with live demo
    • State-of-the-art results on benchmark datasets
 
-⚙️  DevOps & SysAdmin @ UbiOps, Yes!Delft (Dec 2021 - Feb 2022)
+DevOps & SysAdmin @ UbiOps, Yes!Delft (Dec 2021 - Feb 2022)
    • Containerized ML workloads (Docker/Kubernetes)
    • CI/CD pipelines, AWS/GCP infrastructure
 
-🏆 Awards:
+Awards:
    • BobbleAI Datathon Winner (Sept 2024)
    • Proglint CV2k23 5th Place (Oct 2023)`
     })
@@ -204,7 +204,7 @@ Feel free to reach out!`
     execute: () => {
       // This will be handled by the component to trigger actual download
       return {
-        output: `📄 Downloading CV...
+        output: `Downloading CV...
 
 CV download initiated! Check your downloads folder.
 
@@ -232,31 +232,31 @@ unpacking sources
 patching sources
 configuring
 building
-  [1/42] Compiling Haskell skills... ✓
-  [2/42] Building Nix expertise... ✓
-  [3/42] Training ML models... ✓
-  [4/42] Optimizing infrastructure... ✓
+  [1/42] Compiling Haskell skills... OK
+  [2/42] Building Nix expertise... OK
+  [3/42] Training ML models... OK
+  [4/42] Optimizing infrastructure... OK
   ...
-  [42/42] Final assembly... ✓
+  [42/42] Final assembly... OK
 
 build time: 0.5s
 output: /nix/store/...-divit-profile-0.1.0
 
-Success! Profile built successfully. 🎉`
+Success! Profile built successfully.`
     })
   },
 
   'sudo rm -rf /': {
     description: 'DO NOT RUN THIS',
     execute: () => ({
-      output: `Nice try! 😏
+      output: `Nice try!
 
 But this is a web terminal, not a real shell.
 Your system is safe... for now.
 
 Fun fact: On NixOS, even if you did run this, the system could
 be rebuilt from configuration. That's the power of declarative
-infrastructure! ✨`
+infrastructure!`
     })
   },
 
