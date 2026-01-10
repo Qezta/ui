@@ -36,6 +36,11 @@
     gap: 2rem;
     display: flex;
     flex-direction: row;
+
+    > :global(*) {
+      flex: 1 1 0;
+      min-width: 0;
+    }
   }
 
   #card-container {
