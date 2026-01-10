@@ -10,23 +10,14 @@
     build reproducible systems, tinker with declarative configurations, and occasionally dive into
     computer vision research. Mathematics keeps me grounded.
   </p>
-  <p class="cv-link">
-    <a
-      href="https://europa.eu/europass/eportfolio/screen/share/33683761-9b95-4b23-8184-fa65f7a14e06?lang=en"
-      target="_blank"
-      rel="noopener noreferrer">Curriculum Vitae</a
-    >
+  <p class="terminal-hint">
+    Type <code>resume</code> in the terminal to view my CV
   </p>
 </section>
 
 <style lang="scss">
   section {
     min-width: 0;
-  }
-
-  a {
-    white-space: nowrap;
-    word-break: keep-all;
   }
 
   p {
@@ -42,18 +33,26 @@
     }
   }
 
-  .cv-link {
+  .terminal-hint {
     margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: #aaa;
+
+    code {
+      background: rgba(102, 126, 234, 0.2);
+      color: #667eea;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+      font-size: 0.85em;
+      font-weight: 600;
+    }
   }
 
   @media (max-width: 505px) {
     p {
       text-align: left;
       font-size: 0.95rem;
-    }
-
-    a {
-      display: inline-block;
     }
   }
 </style>
