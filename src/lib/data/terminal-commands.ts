@@ -65,7 +65,7 @@ export const commands: Record<string, CommandDefinition> = {
   skills --expert   Show only expert-level skills
   contact           Display contact information
   experience        Show work experience
-  resume            Download CV
+  resume            View CV
   clear             Clear terminal
   nix-build         Build profile (Easter egg)
   sudo rm -rf /     Don't even try this
@@ -200,15 +200,13 @@ Awards:
   },
 
   resume: {
-    description: 'Download CV',
+    description: 'View CV',
     execute: () => {
-      // This will be handled by the component to trigger actual download
+      // This will be handled by the component to open Europass link
       return {
-        output: `Downloading CV...
+        output: `Opening Europass CV...
 
-CV download initiated! Check your downloads folder.
-
-Alternative: https://europa.eu/europass/eportfolio/...`
+Your CV is opening in a new tab!`
       };
     }
   },

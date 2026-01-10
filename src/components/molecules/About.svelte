@@ -6,18 +6,22 @@
 <section>
   <SectionHeader text="About me" icon={faAddressCard} />
   <p>
-    A 23-year-old data science student<br />
-    My
+    Infrastructure engineer & functional programming enthusiast with a data science background. I
+    build reproducible systems, tinker with declarative configurations, and occasionally dive into
+    computer vision research. Mathematics keeps me grounded.
+  </p>
+  <p class="cv-link">
     <a
       href="https://europa.eu/europass/eportfolio/screen/share/33683761-9b95-4b23-8184-fa65f7a14e06?lang=en"
-      >Curriculum Vitae</a
+      target="_blank"
+      rel="noopener noreferrer">Curriculum Vitae</a
     >
   </p>
 </section>
 
 <style lang="scss">
   section {
-    min-width: 0; // Prevent flex overflow
+    min-width: 0;
   }
 
   a {
@@ -31,10 +35,17 @@
     max-width: 100%;
     overflow-wrap: break-word;
     margin-top: 0.5rem;
-    margin-bottom: 0;
+    margin-bottom: 0.5rem;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
   }
 
-  // Mobile optimization
+  .cv-link {
+    margin-top: 0.75rem;
+  }
+
   @media (max-width: 505px) {
     p {
       text-align: left;
@@ -43,7 +54,6 @@
 
     a {
       display: inline-block;
-      margin-top: 0.5rem;
     }
   }
 </style>

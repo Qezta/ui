@@ -47,13 +47,12 @@ This is an interactive CLI experience - explore away!`,
       return;
     }
 
-    // Special handling for resume command
+    // Special handling for resume command - open Europass CV in new tab
     if (trimmedInput === 'resume') {
-      // Trigger CV download
-      const link = document.createElement('a');
-      link.href = '/cv/Divit_Mittal_CV.pdf';
-      link.download = 'Divit_Mittal_CV.pdf';
-      link.click();
+      window.open(
+        'https://europa.eu/europass/eportfolio/screen/share/33683761-9b95-4b23-8184-fa65f7a14e06?lang=en',
+        '_blank'
+      );
     }
 
     // Add to history
