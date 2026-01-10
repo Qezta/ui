@@ -52,8 +52,8 @@
 
   #image {
     transition: margin 1s ease;
-    margin-left: -100px;
-    margin-top: -100px;
+    margin-left: -140px;
+    margin-top: -140px;
     margin-right: 20px;
   }
 

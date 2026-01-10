@@ -3,8 +3,8 @@
 
   export let src = '/pp_ascii.svg';
   export let alt = "Divit Mittal's profile picture";
-  export let width = '150';
-  export let height = '150';
+  export let width = '220';
+  export let height = '220';
 </script>
 
 <!-- svelte-ignore a11y-mouse-events-have-key-events -->
