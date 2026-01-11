@@ -63,6 +63,7 @@
     max-width: 1450px;
     background: #131313eb;
     box-sizing: border-box;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 
     // Full HD
     @media (max-width: 1800px) {
@@ -74,12 +75,14 @@
       padding: 20px;
     }
 
-    // Mobile
-    @media (max-width: 505px) {
+    // Mobile - Increase visibility (using pointer type for reliable detection)
+    @media (pointer: coarse), (max-width: 505px) and (pointer: none) {
       border-radius: 0;
       width: initial !important;
       padding: 20px 15px;
       gap: 1rem;
+      background: #1a1a1af5; // More opaque background
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6); // Stronger shadow
     }
 
     // Mobile
@@ -89,7 +92,7 @@
   }
 
   #molecules {
-    @media (max-width: 505px) {
+    @media (pointer: coarse), (max-width: 505px) and (pointer: none) {
       gap: 2rem;
     }
   }
