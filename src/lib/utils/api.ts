@@ -4,6 +4,8 @@ export interface GitHubRepo {
   forks: number;
   description: string;
   url: string;
+  language: string | null;
+  isFork: boolean;
 }
 
 export interface HuggingFaceModel {
@@ -11,38 +13,108 @@ export interface HuggingFaceModel {
   likes: number;
 }
 
+export interface KaggleDataset {
+  title: string;
+  downloads: number;
+  views: number;
+  url: string;
+}
+
+export type RepoCategory =
+  | 'AI/ML'
+  | 'System & DevTools'
+  | 'Editor Configs'
+  | 'Web & Apps'
+  | 'Audio & DSP'
+  | 'Forks & Contributions'
+  | 'Other';
+
+export interface CategorizedRepos {
+  category: RepoCategory;
+  repos: GitHubRepo[];
+}
+
 export interface Metrics {
   totalStars: number;
   totalForks: number;
   totalRepos: number;
-  featuredRepos: GitHubRepo[];
+  followers: number;
+  categorizedRepos: CategorizedRepos[];
   huggingfaceStats?: HuggingFaceModel;
+  kaggleStats?: {
+    datasets: KaggleDataset[];
+    totalDownloads: number;
+    totalViews: number;
+  };
   lastUpdated: Date;
 }
 
-const REPOS = [
-  'OS-nixCfg',
-  'CARLA-Autonomous-Driving',
-  'hs-faust',
-  'DocAssist-LLM',
-  'kanata-service',
-  'firefox-nixCfg',
-  'Vim-Cfg',
-  'Emacs-Cfg',
-  'TLTR',
-  'hammerspoon-nix',
-  'Zesta-Car-App',
-  'Blinkit-Churn-Analysis',
-  'Driver-Drowsiness-Detection',
-  'Lagrangian-Reconstruction'
-];
-
-const CACHE_KEY = 'divit_metrics_cache';
-const CACHE_DURATION = 1000 * 60 * 60; // 1 hour
+const GITHUB_USERNAME = 'DivitMittal';
+const CACHE_KEY = 'divit_metrics_cache_v2';
+const CACHE_DURATION_MS = 1000 * 60 * 60;
 
 interface CachedMetrics {
   data: Metrics;
   timestamp: number;
+}
+
+const EDITOR_CONFIG_REPOS = ['vim-cfg', 'emacs-cfg', 'pkms'];
+
+const AI_ML_REPOS = [
+  'carla-autonomous-driving',
+  'docassist-llm',
+  'driver-drowsiness-detection',
+  'blinkit-churn-analysis',
+  'zesta-car-app',
+  'datathon-bigdata'
+];
+
+const AUDIO_DSP_REPOS = ['hs-faust', 'tidalcycles-nix', 'audioresswitcher-raycast'];
+
+const SYSTEM_DEVTOOLS_REPOS = [
+  'os-nixcfg',
+  'firefox-nixcfg',
+  'hammerspoon-nix',
+  'termemulator-cfg',
+  'kanata-service',
+  'tltr',
+  'sync-macos',
+  'sync-windows',
+  'sync-android',
+  'lagrangian-reconstruction'
+];
+
+const WEB_APPS_REPOS = [
+  'professionalstay-site',
+  'zestaads',
+  'merinetworth',
+  'git-fun',
+  'hulk',
+  'employee-management'
+];
+
+function matchesKeywords(text: string, keywords: string[]): boolean {
+  return keywords.some((kw) => text.includes(kw));
+}
+
+function categorizeRepo(repo: GitHubRepo): RepoCategory {
+  const nameLower = repo.name.toLowerCase();
+  const lang = (repo.language || '').toLowerCase();
+
+  if (repo.isFork) return 'Forks & Contributions';
+
+  if (EDITOR_CONFIG_REPOS.includes(nameLower)) return 'Editor Configs';
+  if (AI_ML_REPOS.includes(nameLower)) return 'AI/ML';
+  if (AUDIO_DSP_REPOS.includes(nameLower)) return 'Audio & DSP';
+  if (SYSTEM_DEVTOOLS_REPOS.includes(nameLower)) return 'System & DevTools';
+  if (WEB_APPS_REPOS.includes(nameLower)) return 'Web & Apps';
+
+  if (lang === 'nix') return 'System & DevTools';
+  if (['typescript', 'javascript', 'swift', 'dart', 'html', 'css'].includes(lang))
+    return 'Web & Apps';
+  if (lang === 'emacs lisp' || lang === 'vim script') return 'Editor Configs';
+
+  return 'Other';
 }
 
 function getCachedMetrics(): Metrics | null {
@@ -53,8 +125,7 @@ function getCachedMetrics(): Metrics | null {
     const { data, timestamp }: CachedMetrics = JSON.parse(cached);
     const age = Date.now() - timestamp;
 
-    if (age < CACHE_DURATION) {
-      // Convert date string back to Date object
+    if (age < CACHE_DURATION_MS) {
       data.lastUpdated = new Date(data.lastUpdated);
       return data;
     }
@@ -77,37 +148,64 @@ function setCachedMetrics(metrics: Metrics): void {
   }
 }
 
-export async function fetchGitHubStats(): Promise<GitHubRepo[]> {
+export async function fetchGitHubStats(): Promise<{
+  repos: GitHubRepo[];
+  followers: number;
+}> {
   const repos: GitHubRepo[] = [];
 
-  for (const repoName of REPOS) {
-    try {
-      const response = await fetch(`https://api.github.com/repos/DivitMittal/${repoName}`, {
-        headers: {
-          Accept: 'application/vnd.github.v3+json'
-        }
-      });
+  try {
+    const userResponse = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}`, {
+      headers: { Accept: 'application/vnd.github.v3+json' }
+    });
 
-      if (!response.ok) {
-        console.warn(`Failed to fetch ${repoName}:`, response.status);
-        continue;
-      }
+    let followers = 0;
+    let totalRepoCount = 0;
+
+    if (userResponse.ok) {
+      const userData = await userResponse.json();
+      followers = userData.followers || 0;
+      totalRepoCount = userData.public_repos || 0;
+    }
+
+    const pages = Math.ceil(totalRepoCount / 100);
+    const repoPromises = [];
+
+    for (let page = 1; page <= Math.max(pages, 1); page++) {
+      repoPromises.push(
+        fetch(
+          `https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&page=${page}&sort=updated`,
+          {
+            headers: { Accept: 'application/vnd.github.v3+json' }
+          }
+        )
+      );
+    }
+
+    const responses = await Promise.all(repoPromises);
+
+    for (const response of responses) {
+      if (!response.ok) continue;
 
       const data = await response.json();
-
-      repos.push({
-        name: data.name,
-        stars: data.stargazers_count,
-        forks: data.forks_count,
-        description: data.description || '',
-        url: data.html_url
-      });
-    } catch (error) {
-      console.warn(`Error fetching ${repoName}:`, error);
+      for (const repo of data) {
+        repos.push({
+          name: repo.name,
+          stars: repo.stargazers_count,
+          forks: repo.forks_count,
+          description: repo.description || '',
+          url: repo.html_url,
+          language: repo.language,
+          isFork: repo.fork
+        });
+      }
     }
-  }
 
-  return repos;
+    return { repos, followers };
+  } catch (error) {
+    console.warn('Error fetching GitHub stats:', error);
+    return { repos, followers: 0 };
+  }
 }
 
 export async function fetchHuggingFaceStats(): Promise<HuggingFaceModel | null> {
@@ -133,37 +231,104 @@ export async function fetchHuggingFaceStats(): Promise<HuggingFaceModel | null> 
   }
 }
 
+export async function fetchKaggleStats(): Promise<{
+  datasets: KaggleDataset[];
+  totalDownloads: number;
+  totalViews: number;
+} | null> {
+  try {
+    const response = await fetch('https://www.kaggle.com/api/v1/datasets/list?user=divitmittal');
+
+    if (!response.ok) {
+      console.warn('Failed to fetch Kaggle stats:', response.status);
+      return null;
+    }
+
+    const data = await response.json();
+
+    const datasets: KaggleDataset[] = data.map(
+      (ds: {
+        titleNullable?: string;
+        downloadCount?: number;
+        viewCount?: number;
+        urlNullable?: string;
+      }) => ({
+        title: ds.titleNullable || 'Untitled',
+        downloads: ds.downloadCount || 0,
+        views: ds.viewCount || 0,
+        url: ds.urlNullable || ''
+      })
+    );
+
+    const totalDownloads = datasets.reduce((sum, ds) => sum + ds.downloads, 0);
+    const totalViews = datasets.reduce((sum, ds) => sum + ds.views, 0);
+
+    return { datasets, totalDownloads, totalViews };
+  } catch (error) {
+    console.warn('Error fetching Kaggle stats:', error);
+    return null;
+  }
+}
+
+const CATEGORY_DISPLAY_ORDER: RepoCategory[] = [
+  'AI/ML',
+  'System & DevTools',
+  'Web & Apps',
+  'Audio & DSP',
+  'Editor Configs',
+  'Other',
+  'Forks & Contributions'
+];
+
 export async function fetchMetrics(useCache = true): Promise<Metrics> {
-  // Check cache first
   if (useCache) {
     const cached = getCachedMetrics();
-    if (cached) {
-      return cached;
-    }
+    if (cached) return cached;
   }
 
-  // Fetch fresh data
-  const [repos, hfStats] = await Promise.all([
+  const [githubData, hfStats, kaggleStats] = await Promise.all([
     fetchGitHubStats(),
-    fetchHuggingFaceStats().catch(() => null)
+    fetchHuggingFaceStats().catch(() => null),
+    fetchKaggleStats().catch(() => null)
   ]);
+
+  const { repos, followers } = githubData;
 
   const totalStars = repos.reduce((sum, repo) => sum + repo.stars, 0);
   const totalForks = repos.reduce((sum, repo) => sum + repo.forks, 0);
 
-  // Get top 5 repos by stars
-  const featuredRepos = [...repos].sort((a, b) => b.stars - a.stars).slice(0, 5);
+  const categoryMap = new Map<RepoCategory, GitHubRepo[]>();
+
+  for (const repo of repos) {
+    const category = categorizeRepo(repo);
+    if (!categoryMap.has(category)) {
+      categoryMap.set(category, []);
+    }
+    categoryMap.get(category)!.push(repo);
+  }
+
+  for (const categoryRepos of categoryMap.values()) {
+    categoryRepos.sort((a, b) => b.stars - a.stars);
+  }
+
+  const categorizedRepos: CategorizedRepos[] = CATEGORY_DISPLAY_ORDER.filter((cat) =>
+    categoryMap.has(cat)
+  ).map((category) => ({
+    category,
+    repos: categoryMap.get(category)!
+  }));
 
   const metrics: Metrics = {
     totalStars,
     totalForks,
     totalRepos: repos.length,
-    featuredRepos,
+    followers,
+    categorizedRepos,
     huggingfaceStats: hfStats || undefined,
+    kaggleStats: kaggleStats || undefined,
     lastUpdated: new Date()
   };
 
-  // Cache the results
   setCachedMetrics(metrics);
 
   return metrics;
