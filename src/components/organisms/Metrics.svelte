@@ -93,26 +93,26 @@
   {:else if metrics}
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-icon">⭐</div>
+        <div class="stat-icon">★</div>
         <div class="stat-value" use:animateCounter={metrics.totalStars}>{metrics.totalStars}</div>
         <div class="stat-label">Total Stars</div>
       </div>
 
       <div class="stat-card">
-        <div class="stat-icon">👥</div>
+        <div class="stat-icon">◉</div>
         <div class="stat-value" use:animateCounter={metrics.followers}>{metrics.followers}</div>
         <div class="stat-label">Followers</div>
       </div>
 
       <div class="stat-card">
-        <div class="stat-icon">📦</div>
+        <div class="stat-icon">◫</div>
         <div class="stat-value" use:animateCounter={metrics.totalRepos}>{metrics.totalRepos}</div>
         <div class="stat-label">Public Repos</div>
       </div>
 
       {#if metrics.huggingfaceStats}
         <div class="stat-card">
-          <div class="stat-icon">🤗</div>
+          <div class="stat-icon">◕</div>
           <div class="stat-value" use:animateCounter={metrics.huggingfaceStats.downloads}>
             {metrics.huggingfaceStats.downloads}
           </div>
@@ -122,7 +122,7 @@
 
       {#if metrics.kaggleStats}
         <div class="stat-card">
-          <div class="stat-icon">📊</div>
+          <div class="stat-icon">▦</div>
           <div class="stat-value" use:animateCounter={metrics.kaggleStats.totalDownloads}>
             {metrics.kaggleStats.totalDownloads}
           </div>
