@@ -4,7 +4,8 @@
   import {
     fetchMetrics,
     type Metrics as MetricsData,
-    type RepoCategory
+    type RepoCategory,
+    type Project
   } from '../../lib/utils/api';
   import { faChartLine } from '@fortawesome/free-solid-svg-icons';
   import SectionHeader from '../atoms/SectionHeader.svelte';
@@ -76,6 +77,19 @@
     };
     return icons[category];
   }
+
+  function getProjectMetric(project: Project): { label: string; value: number } {
+    if (project.type === 'github') {
+      return { label: '★', value: project.stars || 0 };
+    } else if (project.type === 'huggingface') {
+      return { label: '⬇', value: project.downloads || 0 };
+    } else if (project.type === 'space') {
+      return { label: '♥', value: project.likes || 0 };
+    } else if (project.type === 'kaggle') {
+      return { label: '⬇', value: project.downloads || 0 };
+    }
+    return { label: '', value: 0 };
+  }
 </script>
 
 <section class="metrics-section">
@@ -123,16 +137,16 @@
       {#if metrics.kaggleStats}
         <div class="stat-card">
           <div class="stat-icon">▦</div>
-          <div class="stat-value" use:animateCounter={metrics.kaggleStats.totalDownloads}>
-            {metrics.kaggleStats.totalDownloads}
+          <div class="stat-value" use:animateCounter={metrics.kaggleStats.totalViews}>
+            {metrics.kaggleStats.totalViews}
           </div>
-          <div class="stat-label">Kaggle DLs</div>
+          <div class="stat-label">Kaggle Views</div>
         </div>
       {/if}
     </div>
 
     <div class="categories">
-      {#each metrics.categorizedRepos as { category, repos }}
+      {#each metrics.categorizedProjects as { category, projects }}
         <button
           class="category-button"
           class:expanded={expandedCategory === category}
@@ -140,22 +154,39 @@
         >
           <span class="category-icon">{getCategoryIcon(category)}</span>
           <span class="category-name">{category}</span>
-          <span class="category-count">{repos.length}</span>
+          <span class="category-count">{projects.length}</span>
           <span class="category-arrow">{expandedCategory === category ? '▼' : '▶'}</span>
         </button>
 
         {#if expandedCategory === category}
           <div class="category-repos" transition:slide>
-            {#each repos as repo}
-              <a href={repo.url} target="_blank" rel="noopener noreferrer" class="repo-item">
+            {#each projects as project}
+              <a href={project.url} target="_blank" rel="noopener noreferrer" class="repo-item">
                 <div class="repo-info">
-                  <div class="repo-name">{repo.name}</div>
-                  {#if repo.language}
-                    <span class="repo-lang">{repo.language}</span>
+                  <div class="repo-name">{project.name}</div>
+                  {#if project.type === 'github' && project.language}
+                    <span class="repo-lang">{project.language}</span>
+                  {:else if project.type === 'huggingface'}
+                    <span class="repo-lang">🤗 Model</span>
+                  {:else if project.type === 'space'}
+                    <span class="repo-lang">🤗 Space</span>
+                  {:else if project.type === 'kaggle'}
+                    <span class="repo-lang">📊 Dataset</span>
+                  {/if}
+                  {#if project.type === 'huggingface' && project.likes !== undefined}
+                    <span class="repo-lang">♥ {project.likes}</span>
+                  {/if}
+                  {#if project.type === 'kaggle' && project.views !== undefined}
+                    <span class="repo-lang">👁 {project.views}</span>
                   {/if}
                 </div>
                 <div class="repo-stats">
-                  <span class="repo-stars">★ {repo.stars}</span>
+                  {#if getProjectMetric(project).value > 0}
+                    <span class="repo-stars"
+                      >{getProjectMetric(project).label}
+                      {getProjectMetric(project).value}</span
+                    >
+                  {/if}
                 </div>
               </a>
             {/each}
