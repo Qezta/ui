@@ -8,9 +8,18 @@ export interface GitHubRepo {
   isFork: boolean;
 }
 
+export type { Project, CategorizedProjects };
+
 export interface HuggingFaceModel {
   downloads: number;
   likes: number;
+}
+
+export interface HuggingFaceSpace {
+  id: string;
+  name: string;
+  likes: number;
+  url: string;
 }
 
 export interface KaggleDataset {
@@ -29,9 +38,31 @@ export type RepoCategory =
   | 'Forks & Contributions'
   | 'Other';
 
+export interface Project {
+  name: string;
+  url: string;
+  type: 'github' | 'huggingface' | 'space' | 'kaggle';
+  // GitHub fields
+  stars?: number;
+  forks?: number;
+  language?: string | null;
+  description?: string;
+  isFork?: boolean;
+  // HuggingFace fields
+  downloads?: number;
+  likes?: number;
+  // Kaggle fields
+  views?: number;
+}
+
 export interface CategorizedRepos {
   category: RepoCategory;
   repos: GitHubRepo[];
+}
+
+export interface CategorizedProjects {
+  category: RepoCategory;
+  projects: Project[];
 }
 
 export interface Metrics {
@@ -40,7 +71,9 @@ export interface Metrics {
   totalRepos: number;
   followers: number;
   categorizedRepos: CategorizedRepos[];
+  categorizedProjects: CategorizedProjects[];
   huggingfaceStats?: HuggingFaceModel;
+  huggingfaceSpaces?: HuggingFaceSpace[];
   kaggleStats?: {
     datasets: KaggleDataset[];
     totalDownloads: number;
@@ -270,6 +303,31 @@ export async function fetchKaggleStats(): Promise<{
   }
 }
 
+export async function fetchHuggingFaceSpaces(): Promise<HuggingFaceSpace[]> {
+  try {
+    const response = await fetch('https://huggingface.co/api/spaces?author=divitmittal&limit=100');
+
+    if (!response.ok) {
+      console.warn('Failed to fetch HuggingFace Spaces:', response.status);
+      return [];
+    }
+
+    const data = await response.json();
+
+    return data.map(
+      (space: { id: string; likes: number }) => ({
+        id: space.id,
+        name: space.id.split('/')[1] || space.id,
+        likes: space.likes || 0,
+        url: `https://huggingface.co/spaces/${space.id}`
+      })
+    );
+  } catch (error) {
+    console.warn('Error fetching HuggingFace Spaces:', error);
+    return [];
+  }
+}
+
 const CATEGORY_DISPLAY_ORDER: RepoCategory[] = [
   'AI/ML',
   'System & DevTools',
@@ -286,9 +344,10 @@ export async function fetchMetrics(useCache = true): Promise<Metrics> {
     if (cached) return cached;
   }
 
-  const [githubData, hfStats, kaggleStats] = await Promise.all([
+  const [githubData, hfStats, hfSpaces, kaggleStats] = await Promise.all([
     fetchGitHubStats(),
     fetchHuggingFaceStats().catch(() => null),
+    fetchHuggingFaceSpaces().catch(() => []),
     fetchKaggleStats().catch(() => null)
   ]);
 
@@ -318,13 +377,97 @@ export async function fetchMetrics(useCache = true): Promise<Metrics> {
     repos: categoryMap.get(category)!
   }));
 
+  // Build categorizedProjects that includes GitHub repos + HF + Kaggle
+  const projectCategoryMap = new Map<RepoCategory, Project[]>();
+
+  // Add GitHub repos as projects
+  for (const repo of repos) {
+    const category = categorizeRepo(repo);
+    if (!projectCategoryMap.has(category)) {
+      projectCategoryMap.set(category, []);
+    }
+    projectCategoryMap.get(category)!.push({
+      name: repo.name,
+      url: repo.url,
+      type: 'github',
+      stars: repo.stars,
+      forks: repo.forks,
+      language: repo.language,
+      description: repo.description,
+      isFork: repo.isFork
+    });
+  }
+
+  // Add HuggingFace model to AI/ML category
+  if (hfStats) {
+    if (!projectCategoryMap.has('AI/ML')) {
+      projectCategoryMap.set('AI/ML', []);
+    }
+    projectCategoryMap.get('AI/ML')!.push({
+      name: 'HybridTransformer-MFIF',
+      url: 'https://huggingface.co/divitmittal/HybridTransformer-MFIF',
+      type: 'huggingface',
+      downloads: hfStats.downloads,
+      likes: hfStats.likes
+    });
+  }
+
+  // Add HuggingFace Spaces to AI/ML category
+  if (hfSpaces.length > 0) {
+    if (!projectCategoryMap.has('AI/ML')) {
+      projectCategoryMap.set('AI/ML', []);
+    }
+    hfSpaces.forEach((space) => {
+      projectCategoryMap.get('AI/ML')!.push({
+        name: space.name,
+        url: space.url,
+        type: 'space',
+        likes: space.likes
+      });
+    });
+  }
+
+  // Add Kaggle datasets to AI/ML category
+  if (kaggleStats && kaggleStats.datasets.length > 0) {
+    if (!projectCategoryMap.has('AI/ML')) {
+      projectCategoryMap.set('AI/ML', []);
+    }
+    kaggleStats.datasets.forEach((ds) => {
+      projectCategoryMap.get('AI/ML')!.push({
+        name: ds.title,
+        url: ds.url,
+        type: 'kaggle',
+        downloads: ds.downloads,
+        views: ds.views
+      });
+    });
+  }
+
+  // Sort projects within each category
+  for (const projects of projectCategoryMap.values()) {
+    projects.sort((a, b) => {
+      const aMetric = a.stars || a.downloads || a.views || 0;
+      const bMetric = b.stars || b.downloads || b.views || 0;
+      return bMetric - aMetric;
+    });
+  }
+
+  const categorizedProjects: CategorizedProjects[] = CATEGORY_DISPLAY_ORDER.filter((cat) =>
+    projectCategoryMap.has(cat)
+  ).map((category) => ({
+    category,
+    projects: projectCategoryMap.get(category)!
+  }));
+
   const metrics: Metrics = {
     totalStars,
     totalForks,
     totalRepos: repos.length,
     followers,
     categorizedRepos,
+    categorizedProjects,
     huggingfaceStats: hfStats || undefined,
+    huggingfaceSpaces: hfSpaces.length > 0 ? hfSpaces : undefined,
     kaggleStats: kaggleStats || undefined,
     lastUpdated: new Date()
   };
