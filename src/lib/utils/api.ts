@@ -110,6 +110,7 @@ const SYSTEM_DEVTOOLS_REPOS = [
   'hammerspoon-nix',
   'termemulator-cfg',
   'kanata-service',
+  'ghorg-terraform',
   'tltr',
   'sync-macos',
   'sync-windows',
