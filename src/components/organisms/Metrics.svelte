@@ -68,7 +68,8 @@
   function getCategoryIcon(category: RepoCategory): string {
     const icons: Record<RepoCategory, string> = {
       'AI/ML': '◈',
-      'System & DevTools': '⚙',
+      'System Config': '⚙',
+      DevTools: '⊞',
       'Editor Configs': '⌘',
       'Web & Apps': '◎',
       'Audio & DSP': '♪',

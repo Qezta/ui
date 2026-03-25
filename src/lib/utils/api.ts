@@ -31,7 +31,8 @@ export interface KaggleDataset {
 
 export type RepoCategory =
   | 'AI/ML'
-  | 'System & DevTools'
+  | 'System Config'
+  | 'DevTools'
   | 'Editor Configs'
   | 'Web & Apps'
   | 'Audio & DSP'
@@ -104,19 +105,18 @@ const AI_ML_REPOS = [
 
 const AUDIO_DSP_REPOS = ['hs-faust', 'tidalcycles-nix', 'audioresswitcher-raycast'];
 
-const SYSTEM_DEVTOOLS_REPOS = [
+const SYSTEM_CONFIG_REPOS = [
   'os-nixcfg',
   'firefox-nixcfg',
   'hammerspoon-nix',
   'termemulator-cfg',
-  'kanata-service',
-  'ghorg-terraform',
-  'tltr',
   'sync-macos',
   'sync-windows',
   'sync-android',
-  'lagrangian-reconstruction'
+  'playbooks-4-windows'
 ];
+
+const DEVTOOLS_REPOS = ['ghorg-terraform', 'tltr', 'kanata-service'];
 
 const WEB_APPS_REPOS = [
   'professionalstay-site',
@@ -140,10 +140,11 @@ function categorizeRepo(repo: GitHubRepo): RepoCategory {
   if (EDITOR_CONFIG_REPOS.includes(nameLower)) return 'Editor Configs';
   if (AI_ML_REPOS.includes(nameLower)) return 'AI/ML';
   if (AUDIO_DSP_REPOS.includes(nameLower)) return 'Audio & DSP';
-  if (SYSTEM_DEVTOOLS_REPOS.includes(nameLower)) return 'System & DevTools';
+  if (SYSTEM_CONFIG_REPOS.includes(nameLower)) return 'System Config';
+  if (DEVTOOLS_REPOS.includes(nameLower)) return 'DevTools';
   if (WEB_APPS_REPOS.includes(nameLower)) return 'Web & Apps';
 
-  if (lang === 'nix') return 'System & DevTools';
+  if (lang === 'nix') return 'System Config';
   if (['typescript', 'javascript', 'swift', 'dart', 'html', 'css'].includes(lang))
     return 'Web & Apps';
   if (lang === 'emacs lisp' || lang === 'vim script') return 'Editor Configs';
@@ -331,7 +332,8 @@ export async function fetchHuggingFaceSpaces(): Promise<HuggingFaceSpace[]> {
 
 const CATEGORY_DISPLAY_ORDER: RepoCategory[] = [
   'AI/ML',
-  'System & DevTools',
+  'System Config',
+  'DevTools',
   'Web & Apps',
   'Audio & DSP',
   'Editor Configs',
