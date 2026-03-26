@@ -88,6 +88,7 @@
     // Mobile
     @media (min-width: 506px) {
       max-height: 85vh; // Prevents overflow when screen height is too small.
+      overflow-y: auto; // Allows scrolling when expanded content exceeds max-height.
     }
   }
 
