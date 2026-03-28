@@ -144,7 +144,6 @@ function categorizeRepo(repo: GitHubRepo): RepoCategory {
   if (DEVTOOLS_REPOS.includes(nameLower)) return 'DevTools';
   if (WEB_APPS_REPOS.includes(nameLower)) return 'Web & Apps';
 
-  if (lang === 'nix') return 'System Config';
   if (['typescript', 'javascript', 'swift', 'dart', 'html', 'css'].includes(lang))
     return 'Web & Apps';
   if (lang === 'emacs lisp' || lang === 'vim script') return 'Editor Configs';
