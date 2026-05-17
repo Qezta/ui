@@ -1,0 +1,14 @@
+## macOS finder metadata
+**/.DS_Store
+
+## node
+node_modules
+dist
+
+## nix
+.direnv
+result
+result-*
+
+## tools
+*local.json
