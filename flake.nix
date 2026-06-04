@@ -1,5 +1,5 @@
 {
-  description = "{project-name} flake";
+  description = "qezta-ui flake";
 
   outputs = inputs: let
     inherit (inputs.flake-parts.lib) mkFlake;
