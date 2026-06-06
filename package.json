@@ -18,8 +18,12 @@
       "default": "./src/styles/*"
     }
   },
+  "devDependencies": {
+    "svelte": "^5.56.3",
+    "typescript": "^5.9.3"
+  },
   "peerDependencies": {
-    "svelte": "^3.59.2",
+    "svelte": "^5.56.3",
     "three": "^0.178.0"
   },
   "dependencies": {
