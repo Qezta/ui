@@ -74,7 +74,7 @@
     top: {touchY - 20}px;
     box-shadow: 0px 0px {$burst * 50}px var(--white);
   "
-/>
+></div>
 
 <style lang="scss">
   .touch-cursor {

@@ -8,8 +8,6 @@ export interface GitHubRepo {
   isFork: boolean;
 }
 
-export type { Project, CategorizedProjects };
-
 export interface HuggingFaceModel {
   downloads: number;
   likes: number;
