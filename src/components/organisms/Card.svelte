@@ -4,7 +4,6 @@
   import About from '../molecules/About.svelte';
   import Socials from '../molecules/Socials.svelte';
   import Metrics from './Metrics.svelte';
-  import Terminal from './Terminal.svelte';
   import SourceLink from '../atoms/SourceLink.svelte';
 </script>
 
@@ -22,7 +21,6 @@
   </div>
 </div>
 
-<Terminal />
 <SourceLink />
 
 <style lang="scss">
