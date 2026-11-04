@@ -31,4 +31,4 @@ Consumers must provide `svelte ^3.59.2` and `three ^0.178.0`.
 
 ## License
 
-MIT — see [LICENSE](./LICENSE).
+HONCL-1.0 — see [LICENSE](./LICENSE).
