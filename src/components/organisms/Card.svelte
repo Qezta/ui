@@ -24,20 +24,24 @@
 <SourceLink />
 
 <style lang="scss">
+  // Layout is driven by viewport width, not pointer type: a portrait tablet or
+  // a vertical monitor needs the same single-column card as a narrow window.
+  //   > 1550px  two-column card that fits the screen (scrolls internally)
+  //   <= 1550px single column, readable width, page scrolls
+  //   <= 600px  full-bleed sheet
   #card {
+    display: flex;
+    flex-direction: row;
     gap: 1rem;
-    display: flex;
-    flex-direction: row;
-  }
+    box-sizing: border-box;
+    max-width: 1450px;
+    padding: 25px;
+    border-radius: 15px;
+    background: #131313eb;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 
-  #molecules {
-    gap: 2rem;
-    display: flex;
-    flex-direction: row;
-
-    > :global(*) {
-      flex: 1 1 0;
-      min-width: 0;
+    @media (max-width: 1800px) {
+      max-width: 1300px;
     }
   }
 
@@ -48,72 +52,56 @@
     min-width: 0; // Prevent flex overflow
   }
 
+  #molecules {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+
+    > :global(*) {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+  }
+
   #image {
     transition: margin 1s ease;
-    margin-left: -140px;
-    margin-top: -140px;
-    margin-right: 20px;
+    margin: -140px 20px 0 -140px;
   }
 
-  #card {
-    border-radius: 15px;
-    padding: 25px;
-    max-width: 1450px;
-    background: #131313eb;
-    box-sizing: border-box;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-
-    // Full HD
-    @media (max-width: 1800px) {
-      max-width: 1300px;
-    }
-
-    // Tablet
-    @media (max-width: 768px) {
-      padding: 20px;
-    }
-
-    // Mobile - Increase visibility (using pointer type for reliable detection)
-    @media (pointer: coarse), (max-width: 505px) and (pointer: none) {
-      border-radius: 0;
-      width: initial !important;
-      padding: 20px 15px;
-      gap: 1rem;
-      background: #1a1a1af5; // More opaque background
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6); // Stronger shadow
-    }
-
-    // Mobile
-    @media (min-width: 506px) {
-      max-height: 85vh; // Prevents overflow when screen height is too small.
-      overflow-y: auto; // Allows scrolling when expanded content exceeds max-height.
+  @media (min-width: 1551px) {
+    #card {
+      max-height: 85vh;
+      overflow-y: auto;
     }
   }
 
-  #molecules {
-    @media (pointer: coarse), (max-width: 505px) and (pointer: none) {
-      gap: 2rem;
-    }
-  }
-
-  // Less then Full HD
   @media (max-width: 1550px) {
-    #image {
-      margin: 0;
-    }
-
-    #card {
-      overflow: auto; // Allows scrolling when screen height is too small.
-      width: min-content;
-    }
-
-    #molecules,
-    #card {
+    #card,
+    #molecules {
       flex-direction: column;
     }
 
-    #molecules {
-      gap: 2rem;
+    #card {
+      // `min-content` here collapsed the card to the image width (~200px)
+      // on portrait screens; a capped fluid width keeps text readable.
+      width: min(100%, 46rem);
+      // The card sits inside SvelteKit's wrapper div, not directly in the
+      // flex body, so it has to centre itself.
+      margin-inline: auto;
+    }
+
+    #image {
+      margin: 0;
+    }
+  }
+
+  @media (max-width: 600px) {
+    #card {
+      width: 100%;
+      padding: 20px 16px;
+      border-radius: 0;
+      background: #1a1a1af5;
+      box-shadow: none;
     }
   }
 </style>

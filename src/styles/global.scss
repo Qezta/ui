@@ -25,12 +25,21 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  box-sizing: border-box;
+  min-height: 100vh;
+  min-height: 100dvh; // Mobile URL bars make 100vh taller than the visible area.
   margin: 0;
   background: var(--bg-color);
 
-  @media (max-width: 505px) {
-    display: initial;
+  // Single-column layouts scroll the page; the bottom padding keeps the last
+  // links clear of the fixed Source/Terminal buttons.
+  @media (max-width: 1550px) {
+    align-items: flex-start;
+    padding: 2rem 1rem calc(6rem + env(safe-area-inset-bottom));
+  }
+
+  @media (max-width: 600px) {
+    padding: 0 0 calc(5.5rem + env(safe-area-inset-bottom));
     background-color: #151515;
   }
 }
