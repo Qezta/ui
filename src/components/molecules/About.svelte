@@ -49,9 +49,15 @@
     }
   }
 
-  @media (max-width: 505px) {
+  // Justified text leaves wide gaps in narrow columns.
+  @media (max-width: 768px) {
     p {
       text-align: left;
+    }
+  }
+
+  @media (max-width: 505px) {
+    p {
       font-size: 0.95rem;
     }
   }
