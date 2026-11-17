@@ -38,6 +38,7 @@
 ## Contents
 
 - [Overview](#overview)
+- [Consumers](#consumers)
 - [Usage](#usage)
 - [Peer dependencies](#peer-dependencies)
 - [License](#license)
@@ -50,6 +51,18 @@ Shared Svelte component library and design system for Qezta org sub-products
 (divit.qezta.com, qezta.com).
 
 Consumed as a git dependency — not published to npm.
+
+## Consumers
+
+```mermaid
+flowchart LR
+  ui["Qezta/ui<br/>@qezta/ui"] --> divit["Qezta/divit"]
+  ui --> site["Qezta/site"]
+  copy["Qezta/qezta-website<br/>packages/ui (separate copy)"] -.-> ui
+```
+
+`qezta-website` (what Vercel deploys) carries its own copy in
+`packages/ui`; changes here need porting there.
 
 ## Usage
 
