@@ -1,4 +1,50 @@
-# @qezta/ui
+<div id="top">
+    <div align="center">
+        <img alt='An abstract image of a donut-like object' title='Qezta' height=250 width=250 src='https://qezta.com/qezta.gif' />
+        <h1 align='center'>ui</h1>
+        <strong>Shared Svelte component library and design system for Qezta org sub-products</strong>
+    </div>
+
+</div>
+
+---
+
+<div align='center'>
+    <a href="https://github.com/Qezta/ui/stargazers">
+        <img src="https://img.shields.io/github/stars/Qezta/ui?&style=for-the-badge&logoColor=white&color=purple&logo=starship" alt="stars"/>
+    </a>
+    <a href="https://github.com/Qezta/ui/">
+        <img src="https://img.shields.io/github/repo-size/Qezta/ui?&style=for-the-badge&logoColor=white&color=purple&logo=github" alt="size"/>
+    </a>
+    <a href="https://github.com/Qezta/ui/blob/main/LICENSE">
+        <img src="https://img.shields.io/github/license/Qezta/ui?&style=for-the-badge&logoColor=white&color=purple&logo=unlicense" alt="license"/>
+    </a>
+    <a href="https://github.com/nixos/nixpkgs">
+        <img src="https://img.shields.io/badge/Nixpkgs-unstable-blue.svg?style=for-the-badge&logo=NixOS&logoColor=white&color=purple" alt="nixpkgs"/>
+    </a>
+    <img src="https://img.shields.io/github/languages/top/Qezta/ui?style=for-the-badge&color=purple" alt="repo-top-language"/>
+</div>
+
+---
+
+<div align='center'>
+    <a href="https://github.com/Qezta/ui/actions/workflows/flake-check.yml">
+        <img src="https://github.com/Qezta/ui/actions/workflows/flake-check.yml/badge.svg" alt="flake-check"/>
+    </a>
+</div>
+
+---
+
+## Contents
+
+- [Overview](#overview)
+- [Usage](#usage)
+- [Peer dependencies](#peer-dependencies)
+- [License](#license)
+
+---
+
+## Overview
 
 Shared Svelte component library and design system for Qezta org sub-products
 (divit.qezta.com, qezta.com).
@@ -32,3 +78,11 @@ Consumers must provide `svelte ^3.59.2` and `three ^0.178.0`.
 ## License
 
 MIT — see [LICENSE](./LICENSE).
+
+<div align="right">
+
+[![][back-to-top]](#top)
+
+</div>
+
+[back-to-top]: https://img.shields.io/badge/-BACK_TO_TOP-151515?style=flat-square&color=purple
