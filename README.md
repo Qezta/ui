@@ -58,11 +58,11 @@ Consumed as a git dependency — not published to npm.
 flowchart LR
   ui["Qezta/ui<br/>@qezta/ui"] --> divit["Qezta/divit"]
   ui --> site["Qezta/site"]
-  copy["Qezta/qezta-website<br/>packages/ui (separate copy)"] -.-> ui
 ```
 
-`qezta-website` (what Vercel deploys) carries its own copy in
-`packages/ui`; changes here need porting there.
+Both sites pin this repository by commit (`github:Qezta/ui#<sha>`) and are
+deployed on Vercel from their own repositories, so bump the pin there after
+changing a component.
 
 ## Usage
 
