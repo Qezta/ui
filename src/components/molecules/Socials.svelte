@@ -21,9 +21,9 @@
     </Social>
     <Social
       faIcon={faEnvelope}
-      link="mailto:divitmittal@outlook.in"
+      link="mailto:divit@qezta.com"
       anchor="mail"
-      overrideText="divitmittal@outlook.in"
+      overrideText="divit@qezta.com"
       badge="work"
     />
     <Social
