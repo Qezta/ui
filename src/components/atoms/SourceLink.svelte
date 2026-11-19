@@ -2,7 +2,8 @@
   import { faGithub } from '@fortawesome/free-brands-svg-icons';
   import Fa from 'svelte-fa';
 
-  export let repo = 'https://github.com/Qezta/qezta-website/';
+  // Each site passes its own repository; the org is the fallback.
+  export let repo = 'https://github.com/Qezta';
 </script>
 
 <a

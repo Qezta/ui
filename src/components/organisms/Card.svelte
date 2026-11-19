@@ -5,6 +5,9 @@
   import Socials from '../molecules/Socials.svelte';
   import Metrics from './Metrics.svelte';
   import SourceLink from '../atoms/SourceLink.svelte';
+
+  // Repository behind the "Source" button; defaults to the Qezta org.
+  export let sourceRepo: string | undefined = undefined;
 </script>
 
 <div id="card">
@@ -21,7 +24,7 @@
   </div>
 </div>
 
-<SourceLink />
+<SourceLink repo={sourceRepo} />
 
 <style lang="scss">
   // Layout is driven by viewport width, not pointer type: a portrait tablet or
