@@ -6,8 +6,8 @@ Only the latest release of this project receives security updates.
 
 | Version | Supported |
 | ------- | --------- |
-| latest  | ✓         |
-| older   | ✗         |
+| latest | ✓ |
+| older | ✗ |
 
 ## Reporting a Vulnerability
 
