@@ -8,11 +8,12 @@
 
   // Repository behind the "Source" button; defaults to the Qezta org.
   export let sourceRepo: string | undefined = undefined;
+  export let portraitSrc: string | undefined = undefined;
 </script>
 
 <div id="card">
   <div id="image">
-    <Image />
+    <Image src={portraitSrc} />
   </div>
   <div id="card-container">
     <Title />
