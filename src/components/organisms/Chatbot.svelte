@@ -280,11 +280,11 @@
 
 <style lang="scss">
   $accent: #ff0052;
-  $bg-panel: #111111f2;
-  $bg-header: #0d0d0d;
-  $bg-input: #1a1a1a;
-  $bg-user-msg: #1c0a10;
-  $bg-ai-msg: #161616;
+  $bg-panel: #131313eb;
+  $bg-header: #131313cc;
+  $bg-input: #131313cc;
+  $bg-user-msg: #1c0a10cc;
+  $bg-ai-msg: #161616cc;
   $text: #ccc;
   $text-dim: #666;
   $border: #2a2a2a;
@@ -467,7 +467,7 @@
   }
 
   .suggestion {
-    background: #1a1a1a;
+    background: #1a1a1a99;
     border: 1px solid $border;
     color: $text;
     font-size: 0.72rem;
@@ -587,7 +587,7 @@
 
     textarea {
       flex: 1;
-      background: #111;
+      background: #13131399;
       border: 1px solid $border;
       border-radius: 10px;
       color: $text;
