@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { tick } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import { slide, fade } from 'svelte/transition';
   import { quintOut } from 'svelte/easing';
   import Fa from 'svelte-fa';
@@ -9,7 +9,9 @@
     faPaperPlane,
     faRobot,
     faUser,
-    faSpinner
+    faSpinner,
+    faExpand,
+    faCompress
   } from '@fortawesome/free-solid-svg-icons';
 
   interface Message {
@@ -27,6 +29,12 @@
   ];
 
   let isOpen = false;
+  let isFullscreen = false;
+
+  function toggleFullscreen() {
+    isFullscreen = !isFullscreen;
+    inputEl?.focus();
+  }
   let messages: Message[] = [];
   let inputValue = '';
   let isLoading = false;
@@ -36,10 +44,30 @@
 
   function toggleOpen() {
     isOpen = !isOpen;
-    if (isOpen && messages.length === 0) {
-      // Show welcome on first open
+    if (isOpen) {
+      window.dispatchEvent(new CustomEvent('portfolio-panel', { detail: 'chat' }));
+    } else {
+      isFullscreen = false;
     }
   }
+
+  function handleWindowKeydown(event: KeyboardEvent) {
+    if (!isOpen || event.key !== 'Escape') return;
+    event.preventDefault();
+    if (isFullscreen) isFullscreen = false;
+    else toggleOpen();
+  }
+
+  onMount(() => {
+    const closeOtherPanel = (event: Event) => {
+      if ((event as CustomEvent<string>).detail !== 'chat') {
+        isOpen = false;
+        isFullscreen = false;
+      }
+    };
+    window.addEventListener('portfolio-panel', closeOtherPanel);
+    return () => window.removeEventListener('portfolio-panel', closeOtherPanel);
+  });
 
   async function scrollToBottom() {
     await tick();
@@ -139,6 +167,8 @@
   }
 </script>
 
+<svelte:window on:keydown={handleWindowKeydown} />
+
 <!-- Floating chat button -->
 <button
   class="chat-toggle"
@@ -157,6 +187,7 @@
 {#if isOpen}
   <div
     class="chat-panel"
+    class:fullscreen={isFullscreen}
     transition:slide={{ duration: 280, easing: quintOut, axis: 'y' }}
   >
     <!-- Header -->
@@ -170,9 +201,19 @@
           <span class="header-sub">AI-powered · RAG</span>
         </div>
       </div>
-      <button class="close-btn" on:click={toggleOpen} aria-label="Close">
-        <Fa icon={faXmark} />
-      </button>
+      <div class="header-actions">
+        <button
+          class="close-btn"
+          on:click={toggleFullscreen}
+          aria-pressed={isFullscreen}
+          aria-label={isFullscreen ? 'Exit fullscreen chat' : 'Fullscreen chat'}
+        >
+          <Fa icon={isFullscreen ? faCompress : faExpand} />
+        </button>
+        <button class="close-btn" on:click={toggleOpen} aria-label="Close">
+          <Fa icon={faXmark} />
+        </button>
+      </div>
     </div>
 
     <!-- Messages -->
@@ -288,7 +329,8 @@
     right: 28px;
     z-index: 999;
     width: 370px;
-    max-height: 560px;
+    height: 560px;
+    max-height: calc(100dvh - 120px);
     border-radius: $radius;
     background: $bg-panel;
     border: 1px solid $border;
@@ -298,11 +340,21 @@
     overflow: hidden;
     backdrop-filter: blur(12px);
 
+    &.fullscreen {
+      inset: 12px;
+      width: auto;
+      height: auto;
+      max-height: none;
+      z-index: 1100;
+    }
+
     @media (max-width: 505px) {
-      width: calc(100vw - 24px);
-      right: 12px;
-      bottom: 88px;
-      max-height: calc(100dvh - 120px);
+      &:not(.fullscreen) {
+        width: calc(100vw - 24px);
+        right: 12px;
+        bottom: 88px;
+        max-height: calc(100dvh - 120px);
+      }
     }
   }
 
@@ -348,6 +400,12 @@
     font-size: 0.68rem;
     color: $text-dim;
     margin-top: 1px;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 2px;
   }
 
   .close-btn {
