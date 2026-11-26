@@ -1,6 +1,6 @@
 <div id="top">
     <div align="center">
-        <img alt='Animated Qezta torus logo' title='Qezta' height=250 width=250 src='https://qezta.com/qezta.gif' />
+        <img alt='Animated Qezta torus logo' title='Qezta' height=250 width=250 src='https://qezta.com/qezta.gif' /><sup>™</sup>
         <p>The Qezta torus logo, including its animated version, is a trademark of Qezta.</p>
         <h1 align='center'>ui</h1>
         <strong>Shared Svelte component library and design system for Qezta org sub-products</strong>
